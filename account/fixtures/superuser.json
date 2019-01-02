@@ -1,0 +1,13 @@
+[
+  {
+    "model": "account.User",
+    "pk": 1,
+    "fields": {
+      "user_name": "admin",
+      "salt": "bd8b8019d49e47f684daddd5efc313d2",
+      "hashed_password": "d38dd3dfe88c7fc5331b161b0931ddc6",
+      "is_superuser": "True",
+      "is_active": "True"
+    }
+  }
+]
