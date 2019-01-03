@@ -40,7 +40,7 @@ a {
   margin: 0;
   width: 220px;
   padding: 5px 15px;
-  background-color: #2c8abb;
+  /*background-color: #2c8abb;*/
   height: 60px;
   display: flex;
   align-items: center;

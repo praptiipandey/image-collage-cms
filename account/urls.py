@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^add_group$', groups.Add_group.as_view(), name="add_group"),
     url(r'^change_group/(?P<id>\d+)/$', groups.Change_group.as_view(), name="change_group"),
     url(r'^change_user/(?P<id>\d+)/$', users.Change_user.as_view(), name="change_user"),
+    url(r'^change_password/(?P<id>\d+)/$', users.Change_password.as_view(), name="change_password"),
     url(r'^users_index$', users.Users_index.as_view(), name="users_index"),
     url(r'^groups_index$', groups.Groups_index.as_view(), name="groups_index"),
     url(r'^users_delete$', users.Users_delete.as_view(), name="users_delete"),

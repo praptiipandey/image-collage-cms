@@ -39,15 +39,16 @@
 
 </head>
 <body>
-<div class="page-wrapper">
+
     {% if user_own %}
         <header class="header-navbar" style="background-color: #32A1DB">
             <div class="">
                 <div class="header-content clearfix">
                     <div class="header-left clearfix pull-left">
-                        <h1 class="pull-left logo-tag">
-                            <a href="{% url 'index' %}">
-                            </a></h1>
+{#                        <h3 class="pull-left logo-tag">#}
+                                <h1 class="pull-left logo-tag">
+                                    <a href="{% url 'index' %}"><img src="{{ STATIC_URL }}/base/images/logo.png" alt="Ekbana" height="20"><span>Ek-Cms</span>
+                                </a></h1>
 {#                        <ul class="nav nav-pills ul-head pull-left">#}
                             {#                            {% if user_own.is_superuser or 4 in permission_user %}#}
 {#                            <li role="presentation" class="dropdown">#}
@@ -106,6 +107,7 @@
             {% block header %}
             {% endblock %}
         </header>
+        <div class="page-wrapper">
 
         <div class="nav-sidebar">
             <div class="inner-navbar clearfix">
@@ -116,6 +118,11 @@
 {#                            {% for installed_services_name in installed_services_names %}#}
                                 <li><a href=""><i style="margin-top: -3px;"></i><span
                                         class="span-link">service1</span></a></li>
+                    <li><a href=""><i style="margin-top: -3px;"></i><span
+                                        class="span-link">service2</span></a></li>
+                    <li><a href=""><i style="margin-top: -3px;"></i><span
+                                        class="span-link">service3</span></a></li>
+
 {#                            {% endfor %}#}
 {#                        {% endif %}#}
 {#                    {% endif %}#}

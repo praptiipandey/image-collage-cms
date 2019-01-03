@@ -23,8 +23,7 @@
                 <label class="col-sm-2 control-label" for="id_password">Password:</label>
                 <div class="col-sm-4">
                     <div class="help">Raw passwords are not stored, so there is no way to see this user's
-                        password, but you can change the password using <a href="#" data-toggle="modal"
-                                                                           data-target="#myModal">this form</a>.
+                        password, but you can change the password using <a href="{% url 'change_password' user_id %}">this form</a>.
                     </div>
                 </div>
             </div>
@@ -155,9 +154,11 @@
         <hr/>
         </div>
             <br/>
+            <br/>
+        {% endif %}
         <input type="submit" class="btn btn-primary pull-right user-save">
 
-        {% endif %}
+
     </div>
 
 
@@ -192,11 +193,13 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="modal-footer">
+                    <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button class="btn btn-primary" type="submit" name="submit">Save</button>
+                <button class="btn btn-primary change-password" type="submit" name="submit">Save</button>
+            </div>
+                </div>
+
+
             </div>
         </div>
 
