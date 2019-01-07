@@ -42,6 +42,30 @@ function save_user(data_urls) {
         'is_active': $('#id_is_active:checked').val()?"True":"False",
         'is_superuser': $('#id_is_superuser:checked').val()?"True":"False",
         'groups_id': JSON.stringify(selectedArr),
+        'self_user': data_urls.self_user,
+    };
+    $.ajax({
+        type: "POST",
+        dataType: 'json',
+        data: data,
+        url: data_urls.post_url,
+        success: function (data) {
+            if (data.success){
+                window.location.href = data_urls.success_url
+            }
+            else {
+                location.reload();
+            }
+        }
+    });
+}
+
+function change_password(data_urls) {
+    var data= {
+        'csrfmiddlewaretoken': data_urls.csrfmiddlewaretoken,
+        'old_password': $("#id_old_password").val(),
+        'new_password': $("#id_new_password").val(),
+        'confirm_password': $("#id_confirm_password").val()
     };
     $.ajax({
         type: "POST",

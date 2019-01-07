@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>logout</title>
+
+</head>
+<body>
+        {% if messages %}
+                {% for msg in messages %}
+                    {% if msg.level_tag == 'success' %}
+                            <p>{{ msg.message | safe }}</p>
+                    {% endif %}
+                {% endfor %}
+        {% endif %}
+
+    <p>Thanks for spending some quality time with the Web site today.</p>
+
+    <p><a href="{% url 'login' %}">Log in again</a></p>
+
+<script src="{{ STATIC_URL }}account/vendor/jquery/jquery-3.2.1.min.js"></script>
+
+</body>
+
+</html>

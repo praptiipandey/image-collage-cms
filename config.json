@@ -1,0 +1,16 @@
+{
+  "nav_sidebar": [
+    {
+      "name": "Dashboard",
+      "icon_path": "/static/base/images/",
+      "icon_name": "",
+      "url": "index"
+    },
+    {
+      "name": "Settings",
+      "icon_path": "/static/base/images/",
+      "icon_name": "settings.png",
+      "url": "settings"
+    }
+  ]
+}

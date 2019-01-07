@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from account.models import User, Role, Role_permission, User_role, Permission
 from django.db import connection
-
+import json, os
 
 def base_variables_all(request):
     if 'user' not in request.session:
@@ -12,7 +12,7 @@ def base_variables_all(request):
 
         permission_user = get_permission(user_own.id)
 
-        context = {"user_own": user_own, "permission_user": permission_user}
+        context = {"user_own": user_own, "permission_user": permission_user, "nav_sidebar": nav_sidebar()}
 
     return context
 
@@ -30,3 +30,9 @@ def get_permission(user_id):
 
     permission_user = list(set(permission_user))
     return permission_user
+
+def nav_sidebar():
+    with open("/var/www/django_cms/config.json") as f:
+        data = json.load(f)
+
+    return data["nav_sidebar"]

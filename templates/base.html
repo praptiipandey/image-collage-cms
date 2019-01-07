@@ -116,20 +116,21 @@
 {#                    {% if user_own.is_superuser or 3 in permission_user %}#}
 {#                        {% if installed_services_names %}#}
 {#                            {% for installed_services_name in installed_services_names %}#}
-                                <li><a href=""><i style="margin-top: -3px;"></i><span
-                                        class="span-link">service1</span></a></li>
-                    <li><a href=""><i style="margin-top: -3px;"></i><span
-                                        class="span-link">service2</span></a></li>
-                    <li><a href=""><i style="margin-top: -3px;"></i><span
-                                        class="span-link">service3</span></a></li>
+                                {% for v in nav_sidebar %}
+{#                                    {% for v1 in v %}#}
+                                <li><a href="{% url v.url %}"><i style="margin-top: -3px;">
+                                    <img src="{{ v.icon_path }}{{ v.icon_name }}"></i>
+                                    <span class="span-link">{{ v.name }}</span></a></li>
+{#                                    {% endfor %}#}
+                                {% endfor %}
 
 {#                            {% endfor %}#}
 {#                        {% endif %}#}
 {#                    {% endif %}#}
 
 {#                    {% if user_own.is_superuser %}#}
-                        <li><a href="{% url 'settings' %}"><i class="fa fa-cog" aria-hidden="true"></i><span
-                                class="span-link">Settings</span></a></li>
+{#                        <li><a href="{% url 'settings' %}"><i class="fa fa-cog" aria-hidden="true"></i><span#}
+{#                                class="span-link">Settings</span></a></li>#}
 {#                    {% endif %}#}
                 </ul>
                 <a class="toggle-button" role="button" title="Toggle sidebar"

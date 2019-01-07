@@ -109,7 +109,7 @@ class Add_user(View):
 
     @staticmethod
     def username_validate_length(username):
-        if len(username) > 5:
+        if len(username) >= 5:
             return True
         else:
             return False
@@ -179,6 +179,7 @@ class Change_user(View):
         last_name = request.POST["last_name"]
         is_active = request.POST["is_active"]
         is_superuser = request.POST["is_superuser"]
+        self_user = request.POST["self_user"]
         groups_id = request.POST["groups_id"]
         groups_id_lists = list(json.loads(groups_id))
 
@@ -187,16 +188,19 @@ class Change_user(View):
                 if Add_user().username_validate_length(user_name):
                     user = User.objects.filter(id=id)
                     if user:
-                        user.update(user_name=user_name, email=email, first_name=first_name, last_name=last_name,
-                                    is_superuser=is_superuser
-                                    , is_active=is_active)
-                    user_groups = User_role.objects.filter(user_id=id)
-                    if user_groups:
-                        user_groups.delete()
+                        if self_user:
+                            user.update(user_name=user_name, email=email, first_name=first_name, last_name=last_name)
+                        else:
+                            user.update(user_name=user_name, email=email, first_name=first_name, last_name=last_name,
+                                        is_active=is_active, is_superuser=is_superuser)
 
-                    if groups_id_lists:
-                        for groups_id in groups_id_lists:
-                            User_role.objects.create(user_id=id, role_id=int(groups_id))
+                            user_groups = User_role.objects.filter(user_id=id)
+                            if user_groups:
+                                user_groups.delete()
+
+                            if groups_id_lists:
+                                for groups_id in groups_id_lists:
+                                    User_role.objects.create(user_id=id, role_id=int(groups_id))
 
                     messages.success(request, '%s successfully changed' % user_name)
                     success = True
@@ -211,7 +215,6 @@ class Change_user(View):
             messages.error(request, "user name must not be empty")
 
         data = {
-
             'success': success
         }
         return JsonResponse(data)
@@ -226,6 +229,35 @@ class Change_password(View):
 
 
     def post(self, request, id):
-        # salt = get_salt()
-        # password = hash_string(salt, )
-        pass
+        user_data = User.objects.get(id=id)
+        old_password = request.POST["old_password"]
+        new_password = request.POST["new_password"]
+        confirm_password = request.POST["confirm_password"]
+
+        hashed_password = hash_string(user_data.salt, old_password)
+        if hashed_password == user_data.hashed_password:
+            if Add_user.password_validate_length(new_password):
+                if Add_user.password_validate_numeric(new_password):
+                    if new_password == confirm_password:
+                        salt = get_salt()
+                        password = hash_string(salt, new_password)
+                        User.objects.filter(id=id).update(salt=salt, hashed_password=password)
+                        messages.success(request, 'password for %s successfully changed' % user_data.user_name)
+                        success = True
+                    else:
+                        success = False
+                        messages.error(request, "new password and confirm password did not match")
+                else:
+                    success = False
+                    messages.error(request, "password cannot be all numeric")
+            else:
+                success = False
+                messages.error(request, "length of password must be greater or equal to 8")
+        else:
+            success = False
+            messages.error(request, "old_password incorrect")
+
+        data = {
+            'success': success
+        }
+        return JsonResponse(data)

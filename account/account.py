@@ -54,8 +54,7 @@ class LogoutView(View):
             # if k != user_sess:
             del request.session[k]
 
-        return redirect('login')
-
+        return render(request, 'account/logout.html')
 
 
 class SignUpView(View):
@@ -67,7 +66,6 @@ class SignUpView(View):
         email = request.POST['email']
         password = request.POST['pass']
         confirmpassword = request.POST['pass2']
-
 
         if password == confirmpassword:
             try:

@@ -1,6 +1,5 @@
 import hashlib, uuid
 
-
 def get_salt():
     salt = uuid.uuid4().hex
     return salt
