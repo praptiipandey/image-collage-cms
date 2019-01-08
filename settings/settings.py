@@ -8,7 +8,7 @@ class Settings(View):
         if 'user' not in request.session:
             return redirect('login')
         context = context_processors.base_variables_all(request)
-        return render(request,"settings/setting.html",context)
+        return render(request, "settings/setting.html", context)
 
     def post(self, request):
        pass

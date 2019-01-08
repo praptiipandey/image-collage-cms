@@ -7,18 +7,23 @@
     <div class="panel panel-default">
       <div class="panel-body">
         <div class="page-header d-flex justify-content-between">
-          <div class="actions form-inline">
-                <div class="form-group">
-                    <label>Action:</label>
-                    <select name="action" id="action" class="form-control">
-                        <option value="default" selected="">---------</option>
-                        <option value="delete_selected">Delete Selected Groups</option>
-                    </select>
-                  </div>
-                   {#            <input name="select_across" value="0" class="select-across" type="hidden">#}
+                    {% if "delete" in group_action %}
+                    <div class="actions form-inline">
+{#                                        <div class="form-group">#}
+{#                                            <label>Action:</label>#}
+{#                                            <select name="action" id="action" class="form-control">#}
+{#                                                <option value="default" selected="">---------</option>#}
+{#                                                <option value="delete_selected">Delete selected users</option>#}
+{#                                            </select>#}
+{#                                          </div>#}
+{#                                    <input name="select_across" value="0" class="select-across" type="hidden">#}
 
-                  <button type="submit" class="btn btn-primary" title="Run the selected action" id="delete_go">Go</button>
-            </div>
+                        <button type="submit" class="btn btn-danger" title="Run the selected action" id="delete_go">Delete groups</button>
+                    </div>
+                    {% endif %}
+        {% if "add_group" in group_action %}
+        <a class="btn btn-primary" type="button" href="{% url 'add_group' %}">Add group</a>
+        {% endif %}
             {#                                    <span class="action-counter" data-actions-icnt="2" style="display: inline;">0 of 2 selected</span>#}
             {#<a class="btn btn-default" type="button" style="background-color: #292961; color: white" id="back-button" href="{% url 'add_group' %}">Add Group</a>#}
         </div>
@@ -122,9 +127,7 @@
             });
 
         $('#delete_go').on('click', function () {
-            var option = $('#action option:selected').val();
-
-                   if (option === "delete_selected") {
+            {#var option = $('#action option:selected').val();#}
                        let selectedArr = [];
                        table.rows().nodes().to$().find('input:checkbox[name=selectedBox]:checked').each(function () {
                            selectedArr.push($(this).val());
@@ -145,8 +148,6 @@
                            }
 
                        });
-                   }
-
         });
     </script>
 {% endblock %}

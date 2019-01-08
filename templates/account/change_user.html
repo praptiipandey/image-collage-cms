@@ -24,7 +24,7 @@
                 <label class="col-sm-2 control-label" for="id_password">Password:</label>
                 <div class="col-sm-4">
                     <div class="help">Raw passwords are not stored, so there is no way to see this user's
-                        password, but you can change the password using <a href="{% url 'change_password' user_id %}">this form</a>.
+                        password, but you can change the password using <a href="{% url 'change_password' user_data.id %}">this form</a>.
                     </div>
                 </div>
             </div>
@@ -56,7 +56,7 @@
             </div>
         </div>
 
-        {% if not user_data.id == user_id %}
+        {% if not user_data.id == user_own.id %}
 
             <div class="panel-body">
                 <div class="page-header"><h3>Permissions</h3></div>
@@ -163,48 +163,6 @@
 
             </div></div></div>
 
-
-        <!-- Modal -->
-        <div class="modal fade custom-modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Change Password</h4>
-                    </div>
-                    <div class="modal-body clearfix">
-                        <div class="form-horizontal">
-                            <div class="form-group">
-                                <label class="col-md-4 control-label" for="">Old Password:</label>
-                                <div class="col-md-6">
-                                    <input type="password" name="" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-4 control-label" for="">New Password:</label>
-                                <div class="col-md-6">
-                                    <input type="password" name="" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-4 control-label" for="">Confirm Password:</label>
-                                <div class="col-md-6">
-                                    <input type="password" name="" class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button class="btn btn-primary change-password" type="submit" name="submit">Save</button>
-            </div>
-                </div>
-
-
-            </div>
-        </div>
-
     {% endif %}
 {% endblock %}
 {% block javascript %}
@@ -230,8 +188,10 @@
             var data = {
                 'post_url': "{% url 'change_user' user_data.id  %}",
                 'success_url': "{% url 'users_index' %}",
-            {% if user_data.id == user_id %}
-                'self_user': true,
+            {% if user_data.id == user_own.id %}
+                'self_user': "True",
+            {% else %}
+                'self_user': "False",
             {% endif %}
                 'csrfmiddlewaretoken': '{{ csrf_token }}'
             };

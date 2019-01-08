@@ -5,64 +5,81 @@
 {% block content %}
     {% if user_own.is_superuser %}
 
+{#        this is the block for users#}
         <div class="row">
-
-
+            {% if "users" in settings %}
             <div class="col-lg-4 col-sm-6">
                 <div class="panel panel-default custom-panel">
                     <div class="panel-heading"><p>Users</p></div>
                     <div class="panel-body">
                         <div class="setting-block">
                             <ul>
+                                {% if "list_user" in user_action %}
                                 <li>
                                     <a href="{% url 'users_index' %}" class="srv-icon"><i class="fa fa-list-alt"
                                                                                           aria-hidden="true"></i></a>
                                     <a href="{% url 'users_index' %}" class="srv-link">List Users</a>
                                 </li>
+                                {% endif %}
+                                {% if "add_user" in user_action %}
                                 <li>
                                     <a href="{% url 'add_user' %}" class="srv-icon"><i class="fa fa-user"
                                                                                        aria-hidden="true"></i></a>
                                     <a href="{% url 'add_user' %}" class="srv-link">Add users</a>
                                 </li>
+                                {% endif %}
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
+            {% endif %}
 
+{#        this is the block for groups#}
+            {% if "groups" in settings %}
             <div class="col-lg-4 col-sm-6">
                 <div class="panel panel-default custom-panel">
                     <div class="panel-heading"><p>Groups</p></div>
                     <div class="panel-body">
                         <div class="setting-block">
                             <ul>
+                                {% if "list_group" in group_action %}
                                 <li>
                                     <a href="{% url 'groups_index' %}" class="srv-icon"><i class="fa fa-list-alt"
                                                                                            aria-hidden="true"></i></a>
                                     <a href="{% url 'groups_index' %}" class="srv-link">list groups</a>
                                 </li>
+                                {% endif %}
+                                {% if "add_group" in group_action %}
                                 <li>
                                     <a href="{% url 'add_group' %}" class="srv-icon"><i class="fa fa-users"
                                                                                         aria-hidden="true"></i></a>
                                     <a href="{% url 'add_group' %}" class="srv-link">Add groups</a>
                                 </li>
+                                {% endif %}
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
+            {% endif %}
 
+{#        this is the block for keys#}
+            {% if "keys" in settings %}
             <div class="col-lg-4 col-sm-6">
                 <div class="panel panel-default custom-panel">
                     <div class="panel-heading"><p>Keys</p></div>
                     <div class="panel-body">
                         <div class="setting-block">
                             <ul>
+                                {% if "list_key" in key_action %}
                                 <li>
                                     <a href="{% url 'generate_api_key' %}" class="srv-icon"><i class="fa fa-key"
                                                                                                aria-hidden="true"></i></a>
                                     <a href="{% url 'generate_api_key' %}" class="srv-link">list keys</a>
                                 </li>
+                                {% endif %}
+                                {% if "generate" in key_action %}
                                 <li>
                                     <form method="post" action="{% url 'generate_api_key' %}">
                                         {% csrf_token %}
@@ -75,14 +92,17 @@
                                         <button type="submit" class="srv-link" id="generate_api">Generate</button>
                                     </form>
                                 </li>
+                                {% endif %}
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
+            {% endif %}
     {% endif %}
+</div>
 {% endblock %}
 
 {% block javascript %}
-    <script src="{{ STATIC_URL }}admin/js/sync_configurations.js" type="text/javascript"></script>
+{#    <script src="{{ STATIC_URL }}admin/js/sync_configurations.js" type="text/javascript"></script>#}
 {% endblock %}

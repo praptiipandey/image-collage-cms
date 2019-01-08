@@ -11,8 +11,18 @@ def base_variables_all(request):
         user_own = User.objects.get(id=request.session['user'])
 
         permission_user = get_permission(user_own.id)
-
-        context = {"user_own": user_own, "permission_user": permission_user, "nav_sidebar": nav_sidebar()}
+        data = config_json()
+        users = ""
+        groups = ""
+        keys = ""
+        if "users" in data["settings"]:
+            users = data["settings"]["users"]
+        if "groups" in data["settings"]:
+            groups = data["settings"]["groups"]
+        if "keys" in data["settings"]:
+            keys = data["settings"]["keys"]
+        context = {"user_own": user_own, "permission_user": permission_user, "nav_sidebar": data["nav_sidebar"],
+                   "user_action": users, "group_action": groups, "settings": data["settings"], "key_action": keys}
 
     return context
 
@@ -31,8 +41,8 @@ def get_permission(user_id):
     permission_user = list(set(permission_user))
     return permission_user
 
-def nav_sidebar():
+def config_json():
     with open("/var/www/django_cms/config.json") as f:
         data = json.load(f)
 
-    return data["nav_sidebar"]
+    return data

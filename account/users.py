@@ -159,7 +159,8 @@ class Change_user(View):
             groups = paginator.page(paginator.num_pages)
         if user:
             context["user_data"] = user.values()[0]
-            context["user_id"] = int(id)
+            # context["user_id"] = int(id)
+            # print(context["user_data"]["id"], context["user_id"])
             context["groups"] = groups
             user_groups = User_role.objects.filter(user_id=id)
             if user_groups:
@@ -188,9 +189,11 @@ class Change_user(View):
                 if Add_user().username_validate_length(user_name):
                     user = User.objects.filter(id=id)
                     if user:
-                        if self_user:
+                        if self_user == "True":
+                            print("the user is self")
                             user.update(user_name=user_name, email=email, first_name=first_name, last_name=last_name)
                         else:
+                            print("the user is not self")
                             user.update(user_name=user_name, email=email, first_name=first_name, last_name=last_name,
                                         is_active=is_active, is_superuser=is_superuser)
 
@@ -224,7 +227,7 @@ class Change_password(View):
         user_data = User.objects.get(id=id)
         context = context_processors.base_variables_all(request)
         context['user_data'] = user_data
-        print(context['user_data'].user_name)
+        # print(context['user_data'].user_name)
         return render(request, 'account/change_password.html', context)
 
 

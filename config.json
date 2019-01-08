@@ -3,7 +3,7 @@
     {
       "name": "Dashboard",
       "icon_path": "/static/base/images/",
-      "icon_name": "",
+      "icon_name": "dashboard.png",
       "url": "index"
     },
     {
@@ -12,5 +12,13 @@
       "icon_name": "settings.png",
       "url": "settings"
     }
-  ]
+
+  ],
+  "settings":
+    {
+      "users": ["list_user", "add_user", "delete"],
+      "groups": ["list_group", "add_group", "delete"],
+      "keys": ["generate", "list_key"]
+    }
+
 }
