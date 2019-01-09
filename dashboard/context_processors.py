@@ -2,6 +2,8 @@ from django.shortcuts import redirect
 from account.models import User, Role, Role_permission, User_role, Permission
 from django.db import connection
 import json, os
+from dotenv import load_dotenv, find_dotenv
+load_dotenv(find_dotenv(), override=True)
 
 def base_variables_all(request):
     if 'user' not in request.session:
@@ -42,7 +44,7 @@ def get_permission(user_id):
     return permission_user
 
 def config_json():
-    with open("/var/www/django_cms/config.json") as f:
+    with open(os.getenv("config_path")) as f:
         data = json.load(f)
 
     return data

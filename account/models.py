@@ -26,6 +26,3 @@ class Role_permission(models.Model):
 class User_role(models.Model):
     user_id = models.IntegerField()
     role_id = models.IntegerField()
-
-
-

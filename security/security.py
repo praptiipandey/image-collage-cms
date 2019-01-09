@@ -26,14 +26,14 @@ class Generate_key(View):
 
         if api_key:
             try:
-                api_key.filter(id= api_key[0]['id']).update(key=sha_signature, created_at=datetime.today().replace(microsecond=0))
+                api_key.filter(id=api_key[0]['id']).update(key=sha_signature, created_at=datetime.today().replace(microsecond=0))
                 request.session['api_key'] = hashlib.md5(sha_signature.encode()).hexdigest()
                 messages.success(request, "api key changed successfully")
             except Exception as e:
                 print(e)
                 messages.error(request, "couldnot update api_key")
         else:
-            Api_key.objects.create(key=sha_signature)
+            Api_key.objects.create(key=sha_signature, created_at=datetime.today().replace(microsecond=0))
             request.session['api_key'] = hashlib.md5(sha_signature.encode()).hexdigest()
             messages.success(request, "api key created successfully")
         return redirect('generate_api_key')
