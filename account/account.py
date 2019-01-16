@@ -16,34 +16,65 @@ class LoginView(View):
     def post(self, request):
         name = request.POST['username']
         password = request.POST['pass']
+        authenticate = self.authenticate_user(name, password)
+        msg = ""
+        if authenticate[0]:
+            msg = authenticate[1]
+            # if not user.is_active:
+            #     msg = "username %s is not active, contact your admin." % name
+            # else:
+            #     hashed_password = hash_string(user.salt, password)
+            #     if hashed_password == user.hashed_password:
+            request.session['user'] = authenticate[2]
+            key = Api_key.objects.values("key").first()
+            if not key:
+                h_string = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(16))
+                sha_signature = hashlib.sha1(h_string.encode()).hexdigest()
+                Api_key.objects.create(key=sha_signature)
+                request.session['api_key'] = hashlib.md5(sha_signature.encode()).hexdigest()
+            else:
+                request.session['api_key'] = hashlib.md5(key["key"].encode()).hexdigest()
+
+
+            return redirect('index')
+                # else:
+                #     msg = "username password mismatched"
+        else:
+            msg = authenticate[1]
+
+        return render(request, 'account/login.html', {"msg": msg, "name": name, "password": password})
+
+    @staticmethod
+    def authenticate_user(self, username, password):
         try:
-            user = User.objects.get(user_name=name)
+            user = User.objects.get(user_name=username)
         except Exception as e:
             user = None
 
+        result = []
+        msg = ""
+        status = False
+        user_id = ""
+
         if user:
             if not user.is_active:
-                msg = "username %s is not active, contact your admin." % name
+                msg = "username %s is not active, contact your admin." % username
             else:
                 hashed_password = hash_string(user.salt, password)
                 if hashed_password == user.hashed_password:
-                    request.session['user'] = user.id
-                    key = Api_key.objects.values("key").first()
-                    if not key:
-                        h_string = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(16))
-                        sha_signature = hashlib.sha1(h_string.encode()).hexdigest()
-                        Api_key.objects.create(key=sha_signature)
-                        request.session['api_key'] = hashlib.md5(sha_signature.encode()).hexdigest()
-                    else:
-                        request.session['api_key'] = hashlib.md5(key["key"].encode()).hexdigest()
-
-                    return redirect('index')
+                    status = True
+                    user_id = user.id
                 else:
                     msg = "username password mismatched"
         else:
-            msg = "username" + " " + name + " " + "doesnot exists"
+            msg = "username" + " " + username + " " + "doesnot exists"
 
-        return render(request, 'account/login.html', {"msg": msg, "name": name, "password": password})
+        result.append(status)
+        result.append(msg)
+        result.append(user_id)
+
+        return result
+
 
 class LogoutView(View):
     def get(self, request):
