@@ -45,7 +45,7 @@ class LoginView(View):
         return render(request, 'account/login.html', {"msg": msg, "name": name, "password": password})
 
     @staticmethod
-    def authenticate_user(self, username, password):
+    def authenticate_user(username, password):
         try:
             user = User.objects.get(user_name=username)
         except Exception as e:
