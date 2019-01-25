@@ -7,25 +7,25 @@ import re
 from .models import User, Permission, Role, Role_permission
 from .salting_hashing import get_salt, hash_string
 from django.contrib import messages
-
+from account.decorators import my_login_required
 
 class Groups_index(View):
-    @staticmethod
-    def get(request):
+
+    @my_login_required
+    def get(self, request):
         context = context_processors.base_variables_all(request)
         groups = Role.objects.all()
         context["groups_data"] = groups
-
         return render(request, 'account/groups.html', context)
 
 
 class Add_group(View):
-    @staticmethod
-    def get(request):
+    @my_login_required
+    def get(self, request):
         context = context_processors.base_variables_all(request)
-
         return render(request, 'account/add_group.html', context)
 
+    @my_login_required
     def post(self, request):
         context = context_processors.base_variables_all(request)
         group_name = request.POST["groupname"]
@@ -77,8 +77,8 @@ class Add_group(View):
 
 
 class Groups_delete(View):
-    @staticmethod
-    def post(request):
+    @my_login_required
+    def post(self, request):
         print("i m inside")
         groups_id = request.POST["groups_id"]
         groups_id_list = list(json.loads(groups_id))
@@ -106,8 +106,9 @@ class Groups_delete(View):
 
 
 class Change_group(View):
-    @staticmethod
-    def get(request, id):
+
+    @my_login_required
+    def get(self, request, id):
         context = context_processors.base_variables_all(request)
         permissions = Permission.objects.all()
         try:
@@ -122,8 +123,8 @@ class Change_group(View):
 
         return render(request, 'account/change_group.html', context)
 
-    @staticmethod
-    def post(request, id):
+    @my_login_required
+    def post(self, request, id):
         permissions_ids = request.POST["permissions_id"]
         permissions_id_lists = list(json.loads(permissions_ids))
         group_name = request.POST["group_name"]

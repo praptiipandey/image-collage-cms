@@ -1,8 +1,6 @@
-from django.shortcuts import render
-
+from django.shortcuts import render, get_object_or_404
 # Create your views here.
-from account import account
-
+from django.db import IntegrityError
 from django.contrib.auth import authenticate
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.authtoken.models import Token
@@ -17,8 +15,6 @@ from rest_framework.status import (
     HTTP_200_OK
 )
 from rest_framework.response import Response
-
-
 from .models import Article
 from .serializers import ArticleSerializer
 
@@ -32,12 +28,34 @@ class ArticleView(APIView):
 
     def post(self, request):
         article = request.data.get('article')
-        print(article)
         # Create an article from the above data
         serializer = ArticleSerializer(data=article)
-        if serializer.is_valid(raise_exception=True):
-            article_saved = serializer.save()
-            return Response({"success": "Article '{}' created successfully".format(article_saved.title)})
+        try:
+            if serializer.is_valid(raise_exception=True):
+                article_saved = serializer.save()
+                return Response({"success": "Article '{}' created successfully".format(article_saved.title)})
+        except IntegrityError:
+            content = {'error': 'IntegrityError'}
+            return Response(content, status=HTTP_400_BAD_REQUEST)
+
+    def put(self, request, pk):
+        saved_article = get_object_or_404(Article.objects.all(), pk=pk)
+        data = request.data.get('article')
+        serializer = ArticleSerializer(instance=saved_article, data=data, partial=True)
+        try:
+            if serializer.is_valid(raise_exception=True):
+                article_saved = serializer.save()
+            return Response({"success": "Article '{}' updated successfully".format(article_saved.title)})
+
+        except IntegrityError:
+            content = {'error': 'IntegrityError'}
+            return Response(content, status=HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        # Get object with this pk
+        article = get_object_or_404(Article.objects.all(), pk=pk)
+        article.delete()
+        return Response({"message": "Article with id `{}` has been deleted.".format(pk)}, status=204)
 
 
 

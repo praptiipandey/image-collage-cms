@@ -9,9 +9,11 @@ import re
 from .models import User, Role, User_role
 from .salting_hashing import get_salt, hash_string
 from django.contrib import messages
-
+from account.decorators import my_login_required
 
 class Users_index(View):
+
+    @my_login_required
     def get(self, request):
         context = context_processors.base_variables_all(request)
         user_list = User.objects.all()
@@ -25,10 +27,13 @@ class Users_index(View):
         except EmptyPage:
             users = paginator.page(paginator.num_pages)
         context["users_data"] = users
+        context["users_list"] = user_list
         return render(request, 'account/users.html', context)
 
 
 class Users_delete(View):
+
+    @my_login_required
     def post(self, request):
         users_id = request.POST["users_id"]
         users_id_list = list(json.loads(users_id))
@@ -56,10 +61,13 @@ class Users_delete(View):
 
 
 class Add_user(View):
+
+    @my_login_required
     def get(self, request):
         context = context_processors.base_variables_all(request)
         return render(request, 'account/add_user.html', context)
 
+    @my_login_required
     def post(self, request):
         context = context_processors.base_variables_all(request)
 
@@ -144,8 +152,9 @@ class Add_user(View):
 
 
 class Change_user(View):
-    @staticmethod
-    def get(request, id):
+
+    @my_login_required
+    def get(self, request, id):
         context = context_processors.base_variables_all(request)
         user = User.objects.filter(id=id)
         groups = Role.objects.all()
@@ -171,8 +180,8 @@ class Change_user(View):
 
         return render(request, 'account/change_user.html', context)
 
-    @staticmethod
-    def post(request, id):
+    @my_login_required
+    def post(self, request, id):
 
         user_name = request.POST["username"]
         email = request.POST["email"]
@@ -223,6 +232,7 @@ class Change_user(View):
         return JsonResponse(data)
 
 class Change_password(View):
+    @my_login_required
     def get(self, request, id):
         user_data = User.objects.get(id=id)
         context = context_processors.base_variables_all(request)
@@ -230,7 +240,7 @@ class Change_password(View):
         # print(context['user_data'].user_name)
         return render(request, 'account/change_password.html', context)
 
-
+    @my_login_required
     def post(self, request, id):
         user_data = User.objects.get(id=id)
         old_password = request.POST["old_password"]

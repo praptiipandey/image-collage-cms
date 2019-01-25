@@ -8,6 +8,7 @@ from .models import User
 from security.models import Api_key
 from .salting_hashing import get_salt, hash_string
 import hashlib
+from .decorators import my_login_required
 
 class LoginView(View):
     def get(self, request):
@@ -77,6 +78,7 @@ class LoginView(View):
 
 
 class LogoutView(View):
+    @my_login_required
     def get(self, request):
         print("logout")
         a = list(request.session.keys())

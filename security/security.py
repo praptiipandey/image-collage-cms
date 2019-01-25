@@ -6,9 +6,11 @@ from datetime import datetime
 from django.contrib import messages
 # Create your views here.
 from security.models import Api_key
-
+from account.decorators import my_login_required
 
 class Generate_key(View):
+
+    @my_login_required
     def get(self, request):
         if 'user' not in request.session:
             return redirect('login')
@@ -19,6 +21,7 @@ class Generate_key(View):
             context["keys"] = keys[0]
         return render(request, 'security/api_key.html', context)
 
+    @my_login_required
     def post(self, request):
         hash_string = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(16))
         sha_signature = hashlib.sha1(hash_string.encode()).hexdigest()
