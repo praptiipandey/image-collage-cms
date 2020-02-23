@@ -7,6 +7,12 @@
       "url": "index"
     },
     {
+       "name": "Images",
+      "icon_path": "/static/base/images/",
+      "icon_name": "images.png",
+      "url": "images"
+    },
+    {
       "name": "Settings",
       "icon_path": "/static/base/images/",
       "icon_name": "settings.png",

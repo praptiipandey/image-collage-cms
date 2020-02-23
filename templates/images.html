@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Images{% endblock %}
+{% load static %}
+
+{% block content %}
+
+{#    <form action="/images" method="get">#}
+        {% csrf_token %}
+        {% for image in img %}
+
+             <a href="/images/{{ forloop.counter0 }}">
+{#             <base href="/images/{{ forloop.counter0 }}">#}
+                 <img src="data:image/*;base64, {{image}}"  style="float: left; margin: 0px 0px 15px 15px;"  class="image" width="100" height="100" name= {{ forloop.counter0 }}>
+             </a>
+
+        {% endfor %}
+{#    </form>#}
+
+
+{% endblock %}
+
+
+{% block javascript %}
+{% endblock %}

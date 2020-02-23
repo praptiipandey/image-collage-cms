@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Images{% endblock %}
+{% load static %}
+
+{% block content %}
+
+{# <img src="data:image/*;base64, {{image}}"  style="float: left; margin: 0px 0px 15px 15px;"  class="image" width="100" height="100"  >#}
+
+    {% for file in filelist %}
+        <div class="btn btn-primary" style="margin: 5px">
+            <a href="/images/{{file.1}}/{{ file.0 }}"> {{ file.0}}</a>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}
